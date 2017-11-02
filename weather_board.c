@@ -8,7 +8,6 @@
 #include <signal.h>
 #include "bme280-i2c.h"
 #include "si1132.h"
-#include <mosquitto.h>
 
 const char version[] = "v1.6";
 
@@ -72,45 +71,6 @@ void out_text() {
     fflush(out_file);
 }
 
-static int mosq_error;
-
-void publish_double(struct mosquitto *mosq, char * topic, double value) {
-    if (!mosq) return;
-    if (mosq_error) return;
-
-    char text[20];
-    sprintf(text, "%.2f", value);
-    if ((mosq_error = mosquitto_publish (mosq, NULL, topic, strlen (text), text, 0, false)) != 0) {
-        if (mosq_error) {
-            fprintf (stderr, "Can't publish to Mosquitto server %s\n", mosquitto_strerror(mosq_error));
-        }
-    }
-}
-
-
-void read_sensors(struct mosquitto *mosq) {
-    if (!mosq) return;
-    //fprintf(stderr, "%s\n", __FUNCTION__);
-    int i_pressure, i_temperature, i_humidity;
-    bme280_read_pressure_temperature_humidity((u32*)&i_pressure, &i_temperature, (u32*)&i_humidity);
-    double temperature = (double)i_temperature / 100.0;
-    double humidity = (double)i_humidity / 1024.0;
-    double pressure = (double)i_pressure / 100.0;
-
-    //bme280_readAltitude(i_pressure, SEALEVELPRESSURE_HPA)
-
-    double uv_index = Si1132_readUV() / 100.0;
-    double visible = Si1132_readVisible();
-    double ir = Si1132_readIR();
-    publish_double(mosq, "home/hall/weather/temperature", temperature);
-    publish_double(mosq, "home/hall/weather/humidity", humidity);
-    publish_double(mosq, "home/hall/weather/pressure", pressure);
-    publish_double(mosq, "home/hall/weather/uv_index", uv_index);
-    publish_double(mosq, "home/hall/weather/visible", visible);
-    publish_double(mosq, "home/hall/weather/ir", ir);
-}
-
-
 void out_json() {
     time_t timer;
     char buffer[26] = {};
@@ -140,18 +100,6 @@ static void sighandler(int signum) {
         fprintf(stderr, "Signal caught, exiting!\n");
     }
     do_exit = 1;
-}
-
-void mosq_log_callback(struct mosquitto *mosq, void *userdata, int level, const char *str) {
-    switch(level) {
-//    case MOSQ_LOG_DEBUG:
-//    case MOSQ_LOG_INFO:
-//    case MOSQ_LOG_NOTICE:
-    case MOSQ_LOG_WARNING:
-    case MOSQ_LOG_ERR: {
-        fprintf(stderr, "%i:%s\n", level, str);
-    }
-    }
 }
 
 int main(int argc, char **argv) {
@@ -209,29 +157,6 @@ int main(int argc, char **argv) {
 
     fprintf(stderr, "WEATHER-BOARD %s\n", version);
 
-    mosquitto_lib_init();
-
-    struct mosquitto *mosq = NULL;
-    const char * mqtt_host = "localhost";
-    const char * mqtt_username = "owntracks";
-    const char * mqtt_password = "zhopa";
-    int mqtt_port = 8883;
-    int mqtt_keepalive = 60;
-    bool clean_session = true;
-
-    mosq = mosquitto_new(progname, clean_session, NULL);
-    if(!mosq) {
-        fprintf(stderr, "mosq Error: Out of memory.\n");
-    } else {
-        mosquitto_log_callback_set(mosq, mosq_log_callback);
-        mosquitto_username_pw_set (mosq, mqtt_username, mqtt_password);
-
-	fprintf (stderr, "Try connect to Mosquitto server \n");
-        mosq_error = mosquitto_connect (mosq, mqtt_host, mqtt_port, mqtt_keepalive);
-        if (mosq_error) {
-            fprintf (stderr, "Can't connect to Mosquitto server %s\n", mosquitto_strerror(mosq_error));
-        }
-    }
     open_outfile();
 
     while (!do_exit) {
@@ -246,25 +171,9 @@ int main(int argc, char **argv) {
         } else {
             out_json();
         }
-        read_sensors(mosq);
         usleep(20000000);
-        if (mosq_error) {
-            mosquitto_disconnect(mosq);
-	    fprintf (stderr, "Try connect to Mosquitto server \n");
-            mosq_error = mosquitto_connect (mosq, mqtt_host, mqtt_port, mqtt_keepalive);
-            if (mosq_error) {
-                fprintf (stderr, "Can't connect to Mosquitto server %s\n", mosquitto_strerror(mosq_error));
-            }
-        }
     }
 
     close_outfile();
-
-    if (mosq) {
-        mosquitto_disconnect(mosq);
-        mosquitto_destroy(mosq);
-    }
-    mosquitto_lib_cleanup();
-
     return 0;
 }

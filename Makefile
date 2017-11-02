@@ -4,7 +4,7 @@ CFLAGS = -g -std=c11 -MD -MP  -Wall -Wfatal-errors
 
 OBJGROUP = si1132.o bme280-i2c.o bme280.o weather_board.o
 
-EXTRA_LIBS = -lwiringPi -lpthread -lcrypt -lrt -lmosquitto
+EXTRA_LIBS = -lwiringPi -lpthread -lcrypt -lrt
 
 all: weather_board
 
