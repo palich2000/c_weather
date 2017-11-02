@@ -550,15 +550,15 @@ BME280_BUS_RD_PARAM_TYPE to function calls used inside the API
 /**\name	DELAY DEFINITIONS  */
 /***************************************************/
 #define T_INIT_MAX                             (20)
-		/* 20/16 = 1.25 ms */
+/* 20/16 = 1.25 ms */
 #define T_MEASURE_PER_OSRS_MAX                 (37)
-		/* 37/16 = 2.3125 ms*/
+/* 37/16 = 2.3125 ms*/
 
 #define T_SETUP_PRESSURE_MAX                   (10)
-		/* 10/16 = 0.625 ms */
+/* 10/16 = 0.625 ms */
 
 #define T_SETUP_HUMIDITY_MAX                   (10)
-		/* 10/16 = 0.625 ms */
+/* 10/16 = 0.625 ms */
 /****************************************************/
 /**\name	DEFINITIONS FOR ARRAY SIZE OF DATA   */
 /***************************************************/
@@ -788,48 +788,48 @@ FOR PRESSURE AND TEMPERATURE DATA  */
  * @brief This structure holds all device specific calibration parameters
  */
 struct bme280_calibration_param_t {
-	u16 dig_T1;/**<calibration T1 data*/
-	s16 dig_T2;/**<calibration T2 data*/
-	s16 dig_T3;/**<calibration T3 data*/
-	u16 dig_P1;/**<calibration P1 data*/
-	s16 dig_P2;/**<calibration P2 data*/
-	s16 dig_P3;/**<calibration P3 data*/
-	s16 dig_P4;/**<calibration P4 data*/
-	s16 dig_P5;/**<calibration P5 data*/
-	s16 dig_P6;/**<calibration P6 data*/
-	s16 dig_P7;/**<calibration P7 data*/
-	s16 dig_P8;/**<calibration P8 data*/
-	s16 dig_P9;/**<calibration P9 data*/
+    u16 dig_T1;/**<calibration T1 data*/
+    s16 dig_T2;/**<calibration T2 data*/
+    s16 dig_T3;/**<calibration T3 data*/
+    u16 dig_P1;/**<calibration P1 data*/
+    s16 dig_P2;/**<calibration P2 data*/
+    s16 dig_P3;/**<calibration P3 data*/
+    s16 dig_P4;/**<calibration P4 data*/
+    s16 dig_P5;/**<calibration P5 data*/
+    s16 dig_P6;/**<calibration P6 data*/
+    s16 dig_P7;/**<calibration P7 data*/
+    s16 dig_P8;/**<calibration P8 data*/
+    s16 dig_P9;/**<calibration P9 data*/
 
-	u8  dig_H1;/**<calibration H1 data*/
-	s16 dig_H2;/**<calibration H2 data*/
-	u8  dig_H3;/**<calibration H3 data*/
-	s16 dig_H4;/**<calibration H4 data*/
-	s16 dig_H5;/**<calibration H5 data*/
-	s8  dig_H6;/**<calibration H6 data*/
+    u8  dig_H1;/**<calibration H1 data*/
+    s16 dig_H2;/**<calibration H2 data*/
+    u8  dig_H3;/**<calibration H3 data*/
+    s16 dig_H4;/**<calibration H4 data*/
+    s16 dig_H5;/**<calibration H5 data*/
+    s8  dig_H6;/**<calibration H6 data*/
 
-	s32 t_fine;/**<calibration T_FINE data*/
+    s32 t_fine;/**<calibration T_FINE data*/
 };
 /*!
  * @brief This structure holds BME280 initialization parameters
  */
 struct bme280_t {
-	struct bme280_calibration_param_t cal_param;
-	/**< calibration parameters*/
+    struct bme280_calibration_param_t cal_param;
+    /**< calibration parameters*/
 
-	u8 chip_id;/**< chip id of the sensor*/
-	u8 dev_addr;/**< device address of the sensor*/
+    u8 chip_id;/**< chip id of the sensor*/
+    u8 dev_addr;/**< device address of the sensor*/
 
-	u8 oversamp_temperature;/**< temperature over sampling*/
-	u8 oversamp_pressure;/**< pressure over sampling*/
-	u8 oversamp_humidity;/**< humidity over sampling*/
-	u8 ctrl_hum_reg;/**< status of control humidity register*/
-	u8 ctrl_meas_reg;/**< status of control measurement register*/
-	u8 config_reg;/**< status of configuration register*/
+    u8 oversamp_temperature;/**< temperature over sampling*/
+    u8 oversamp_pressure;/**< pressure over sampling*/
+    u8 oversamp_humidity;/**< humidity over sampling*/
+    u8 ctrl_hum_reg;/**< status of control humidity register*/
+    u8 ctrl_meas_reg;/**< status of control measurement register*/
+    u8 config_reg;/**< status of configuration register*/
 
-	BME280_WR_FUNC_PTR;/**< bus write function pointer*/
-	BME280_RD_FUNC_PTR;/**< bus read function pointer*/
-	void (*delay_msec)(BME280_MDELAY_DATA_TYPE);/**< delay function pointer*/
+    BME280_WR_FUNC_PTR;/**< bus write function pointer*/
+    BME280_RD_FUNC_PTR;/**< bus read function pointer*/
+    void (*delay_msec)(BME280_MDELAY_DATA_TYPE);/**< delay function pointer*/
 };
 /**************************************************************/
 /**\name	FUNCTION DECLARATIONS                         */
@@ -884,7 +884,7 @@ BME280_RETURN_FUNCTION_TYPE bme280_init(struct bme280_t *bme280);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_read_uncomp_temperature(
-s32 *v_uncomp_temperature_s32);
+    s32 *v_uncomp_temperature_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR  INTIALIZATION TRUE TEMPERATURE */
 /**************************************************************/
@@ -916,7 +916,7 @@ s32 bme280_compensate_temperature_int32(s32 v_uncomp_temperature_s32);
  *
 */
 s16 bme280_compensate_temperature_int32_sixteen_bit_output(
-s32 v_uncomp_temperature_s32);
+    s32 v_uncomp_temperature_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR  INTIALIZATION UNCOMPENSATED PRESSURE */
 /**************************************************************/
@@ -940,7 +940,7 @@ s32 v_uncomp_temperature_s32);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_read_uncomp_pressure(
-s32 *v_uncomp_pressure_s32);
+    s32 *v_uncomp_pressure_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR  INTIALIZATION TRUE PRESSURE */
 /**************************************************************/
@@ -982,7 +982,7 @@ u32 bme280_compensate_pressure_int32(s32 v_uncomp_pressure_s32);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_read_uncomp_humidity(
-s32 *v_uncomp_humidity_s32);
+    s32 *v_uncomp_humidity_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR  INTIALIZATION RELATIVE HUMIDITY */
 /**************************************************************/
@@ -1016,7 +1016,7 @@ u32 bme280_compensate_humidity_int32(s32 v_uncomp_humidity_s32);
  *
 */
 u16 bme280_compensate_humidity_int32_sixteen_bit_output(
-s32 v_uncomp_humidity_s32);
+    s32 v_uncomp_humidity_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR  INTIALIZATION UNCOMPENSATED PRESSURE,
  TEMPERATURE AND HUMIDITY */
@@ -1041,8 +1041,8 @@ s32 v_uncomp_humidity_s32);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_read_uncomp_pressure_temperature_humidity(
-s32 *v_uncomp_pressure_s32,
-s32 *v_uncomp_temperature_s32, s32 *v_uncomp_humidity_s32);
+    s32 *v_uncomp_pressure_s32,
+    s32 *v_uncomp_temperature_s32, s32 *v_uncomp_humidity_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR TRUE UNCOMPENSATED PRESSURE,
  TEMPERATURE AND HUMIDITY */
@@ -1065,7 +1065,7 @@ s32 *v_uncomp_temperature_s32, s32 *v_uncomp_humidity_s32);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_read_pressure_temperature_humidity(
-u32 *v_pressure_u32, s32 *v_temperature_s32, u32 *v_humidity_u32);
+    u32 *v_pressure_u32, s32 *v_temperature_s32, u32 *v_humidity_u32);
 /**************************************************************/
 /**\name	FUNCTION FOR CALIBRATION */
 /**************************************************************/
@@ -1127,7 +1127,7 @@ BME280_RETURN_FUNCTION_TYPE bme280_get_calib_param(void);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_get_oversamp_temperature(
-u8 *v_value_u8);
+    u8 *v_value_u8);
 /*!
  *	@brief This API is used to set
  *	the temperature oversampling setting in the register 0xF4
@@ -1154,7 +1154,7 @@ u8 *v_value_u8);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_set_oversamp_temperature(
-u8 v_value_u8);
+    u8 v_value_u8);
 /**************************************************************/
 /**\name	FUNCTION FOR PRESSURE OVER SAMPLING */
 /**************************************************************/
@@ -1184,7 +1184,7 @@ u8 v_value_u8);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_get_oversamp_pressure(
-u8 *v_value_u8);
+    u8 *v_value_u8);
 /*!
  *	@brief This API is used to set
  *	the pressure oversampling setting in the register 0xF4
@@ -1211,7 +1211,7 @@ u8 *v_value_u8);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_set_oversamp_pressure(
-u8 v_value_u8);
+    u8 v_value_u8);
 /**************************************************************/
 /**\name	FUNCTION FOR HUMIDITY OVER SAMPLING */
 /**************************************************************/
@@ -1281,7 +1281,7 @@ BME280_RETURN_FUNCTION_TYPE bme280_get_oversamp_humidity(u8 *v_value_u8);
  *
 */
 BME280_RETURN_FUNCTION_TYPE bme280_set_oversamp_humidity(
-u8 v_value_u8);
+    u8 v_value_u8);
 /**************************************************************/
 /**\name	FUNCTION FOR POWER MODE*/
 /**************************************************************/
@@ -1545,8 +1545,8 @@ BME280_RETURN_FUNCTION_TYPE bme280_set_standby_durn(u8 v_standby_durn_u8);
 */
 BME280_RETURN_FUNCTION_TYPE
 bme280_get_forced_uncomp_pressure_temperature_humidity(
-s32 *v_uncom_pressure_s32,
-s32 *v_uncom_temperature_s32, s32 *v_uncom_humidity_s32);
+    s32 *v_uncom_pressure_s32,
+    s32 *v_uncom_temperature_s32, s32 *v_uncom_humidity_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR COMMON READ AND WRITE */
 /**************************************************************/
@@ -1568,7 +1568,7 @@ s32 *v_uncom_temperature_s32, s32 *v_uncom_humidity_s32);
  *
  */
 BME280_RETURN_FUNCTION_TYPE bme280_write_register(u8 v_addr_u8,
-u8 *v_data_u8, u8 v_len_u8);
+        u8 *v_data_u8, u8 v_len_u8);
 /*!
  * @brief
  *	This API reads the data from
@@ -1587,7 +1587,7 @@ u8 *v_data_u8, u8 v_len_u8);
  *
  */
 BME280_RETURN_FUNCTION_TYPE bme280_read_register(u8 v_addr_u8,
-u8 *v_data_u8, u8 v_len_u8);
+        u8 *v_data_u8, u8 v_len_u8);
 /**************************************************************/
 /**\name	FUNCTION FOR FLOAT OUTPUT TEMPERATURE*/
 /**************************************************************/
@@ -1607,7 +1607,7 @@ u8 *v_data_u8, u8 v_len_u8);
  *
 */
 double bme280_compensate_temperature_double(
-s32 v_uncom_temperature_s32);
+    s32 v_uncom_temperature_s32);
 /**************************************************************/
 /**\name	FUNCTION FOR FLOAT OUTPUT PRESSURE*/
 /**************************************************************/
@@ -1681,7 +1681,7 @@ u32 bme280_compensate_pressure_int64(s32 v_uncom_pressure_s32);
  *
 */
 u32 bme280_compensate_pressure_int64_twentyfour_bit_output(
-s32 v_uncom_pressure_s32);
+    s32 v_uncom_pressure_s32);
 #endif
 /**************************************************************/
 /**\name	FUNCTION FOR WAIT PERIOD*/
@@ -1700,5 +1700,5 @@ s32 v_uncom_pressure_s32);
  *
  */
 BME280_RETURN_FUNCTION_TYPE bme280_compute_wait_time(u8
-*v_delaytime_u8r);
+        *v_delaytime_u8r);
 #endif
