@@ -60,8 +60,10 @@ void out_text() {
     fprintf(out_file, "Visible : %.0f Lux\e[K\n", Si1132_readVisible());
     fprintf(out_file, "IR : %.0f Lux\e[K\n", Si1132_readIR());
 
-    bme280_read_pressure_temperature_humidity(
-        (u32*)&pressure, &temperature, (u32*)&humidity);
+    if (bme280_read_pressure_temperature_humidity(
+        (u32*)&pressure, &temperature, (u32*)&humidity) == -1) {
+	fprintf(stderr, "%s Error communication with bme280\n", __FUNCTION__);
+    }
     fprintf(out_file, "======== bme280 ========\n");
     fprintf(out_file, "temperature : %.2lf 'C\e[K\n", (double)temperature / 100.0);
     fprintf(out_file, "humidity : %.2lf %%\e[K\n",	(double)humidity / 1024.0);
@@ -79,8 +81,10 @@ void out_json() {
     time(&timer);
     tm_info = localtime(&timer);
     strftime(buffer, sizeof(buffer) - 1, "%Y-%m-%d %H:%M:%S", tm_info);
-    bme280_read_pressure_temperature_humidity(
-        (u32*)&pressure, &temperature, (u32*)&humidity);
+    if (bme280_read_pressure_temperature_humidity(
+        (u32*)&pressure, &temperature, (u32*)&humidity) == -1) {
+	fprintf(stderr, "%s Error communication with bme280\n", __FUNCTION__);
+    }
     fprintf(out_file,
             "{\"time\": \"%s\", \"brand\": \"ODROID\", \"model\": \"WB2\", \"id\": 0, \"channel\": 1, \"battery\": \"OK\", \
 \"temperature_C\": %.2lf, \"humidity\": %.2lf, \"pressure\": %.2lf, \"altitude\": %f, \
