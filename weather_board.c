@@ -389,6 +389,7 @@ main (int argc, char *const *argv) {
 
         si1132_begin(device);
         bme280_begin(device);
+	umask(0022);
         open_outfile();
 
         pthread_create( &main_th, NULL, main_loop, NULL);
