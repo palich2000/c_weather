@@ -4,13 +4,14 @@
 #include <unistd.h>
 #include <wiringPiI2C.h>
 #include "bme280-i2c.h"
+#include "dlog.h"
 
 s32 bme280_begin(const char *device) {
     s32 com_rslt = 0;
 
     bme280Fd = wiringPiI2CSetupInterface(device, BME280_I2C_ADDRESS1);
     if (bme280Fd < 0) {
-        printf("ERROR: bme280 open failed\n");
+        daemon_log(LOG_ERR,"ERROR: bme280 open failed");
         return -1;
     }
 

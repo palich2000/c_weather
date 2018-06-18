@@ -3,16 +3,17 @@
 #include <unistd.h>
 #include <wiringPiI2C.h>
 #include "si1132.h"
+#include "dlog.h"
 
 int si1132_begin(const char *device) {
     si1132Fd = wiringPiI2CSetupInterface(device, Si1132_ADDR);
     if (si1132Fd < 0) {
-        printf("ERROR: si1132 open failed\n");
+        daemon_log(LOG_ERR,"ERROR: si1132 open failed");
         return -1;
     }
 
     if (wiringPiI2CReadReg8(si1132Fd, Si1132_REG_PARTID) != 0x32) {
-        printf("ERROR: si1132 read failed the PART ID\n");
+        daemon_log(LOG_ERR,"ERROR: si1132 read failed the PART ID");
         return -1;
     }
 

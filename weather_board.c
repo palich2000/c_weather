@@ -13,6 +13,8 @@
 #include <sys/resource.h>
 #include <sys/syscall.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "bme280-i2c.h"
 #include "si1132.h"
