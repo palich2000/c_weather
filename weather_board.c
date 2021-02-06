@@ -135,7 +135,11 @@ void open_outfile() {
         out_file = fopen(out_filename, "a");
     }
     if (!out_file) {
-        daemon_log(LOG_ERR, "Unable to open out file %d %s", errno, strerror(errno));
+        daemon_log(LOG_ERR, "Unable to open out file %s %d %s", out_filename, errno, strerror(errno));
+    } else {
+       if (out_file != stdout) {
+          daemon_log(LOG_INFO, "File open ok %s", out_filename);
+       }
     }
 }
 
@@ -177,12 +181,16 @@ void out_json() {
         return;
     }
 
-    fprintf(out_file,
+    if (fprintf(out_file,
             "{\"time\": \"%s\", \"brand\": \"ODROID\", \"model\": \"WB2\", \"id\": 0, \"channel\": 1, \"battery\": \"OK\", \
 \"temperature_C\": %.2lf, \"humidity\": %.2lf, \"pressure\": %.2lf, \"altitude\": %f, \
 \"uv_index\": %.2f, \"visible\": %.0f, \"ir\": %.0f}\n", buffer,
             (double)temperature / 100.0, (double)humidity / 1024.0, (double)pressure / 100.0, bme280_readAltitude(pressure, SEALEVELPRESSURE_HPA),
-            Si1132_readUV() / 100.0, Si1132_readVisible(), Si1132_readIR() );
+            Si1132_readUV() / 100.0, Si1132_readVisible(), Si1132_readIR() ) < 0) {
+       daemon_log(LOG_ERR, "%s Error write to file (%d) %s", __FUNCTION__, errno, strerror(errno));
+    } else {
+	 daemon_log(LOG_INFO, "write ok");
+    }
     fflush(out_file);
 }
 
